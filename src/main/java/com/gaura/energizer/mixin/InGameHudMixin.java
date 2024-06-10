@@ -31,25 +31,25 @@ public class InGameHudMixin {
 
     // region AIR BAR
 
-    @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V", ordinal = 6), index = 1)
+    @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V", ordinal = 6), index = 1)
     private int adjustAirBarXFirst(int x) {
 
         return getAirX(x);
     }
 
-    @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V", ordinal = 6), index = 2)
+    @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V", ordinal = 6), index = 2)
     private int adjustAirBarYFirst(int y) {
 
         return getAirY(y);
     }
 
-    @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V", ordinal = 7), index = 1)
+    @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V", ordinal = 7), index = 1)
     private int adjustAirBarXSecond(int x) {
 
         return getAirX(x);
     }
 
-    @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V", ordinal = 7), index = 2)
+    @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V", ordinal = 7), index = 2)
     private int adjustAirBarYSecond(int y) {
 
         return getAirY(y);
@@ -75,30 +75,30 @@ public class InGameHudMixin {
 
     // region HUNGER BAR
 
-    @Redirect(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V", ordinal = 3))
-    private void removeHungerBarFirst(DrawContext context, Identifier texture, int x, int y, int u, int v, int width, int height) {
+    @Redirect(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V", ordinal = 3))
+    private void removeHungerBarFirst(DrawContext context, Identifier texture, int x, int y, int u, int v) {
 
         if (!Energizer.CONFIG.remove_hunger) {
 
-            context.drawTexture(texture, x + Energizer.CONFIG.x_offset_hunger_bar, y - Energizer.CONFIG.y_offset_hunger_bar, u, v, width, height);
+            context.drawGuiTexture(texture, x + Energizer.CONFIG.x_offset_hunger_bar, y - Energizer.CONFIG.y_offset_hunger_bar, u, v);
         }
     }
 
-    @Redirect(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V", ordinal = 4))
-    private void removeHungerBarSecond(DrawContext context, Identifier texture, int x, int y, int u, int v, int width, int height) {
+    @Redirect(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V", ordinal = 4))
+    private void removeHungerBarSecond(DrawContext context, Identifier texture, int x, int y, int u, int v) {
 
         if (!Energizer.CONFIG.remove_hunger) {
 
-            context.drawTexture(texture, x + Energizer.CONFIG.x_offset_hunger_bar, y - Energizer.CONFIG.y_offset_hunger_bar, u, v, width, height);
+            context.drawGuiTexture(texture, x + Energizer.CONFIG.x_offset_hunger_bar, y - Energizer.CONFIG.y_offset_hunger_bar, u, v);
         }
     }
 
-    @Redirect(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V", ordinal = 5))
-    private void removeHungerBarThird(DrawContext context, Identifier texture, int x, int y, int u, int v, int width, int height) {
+    @Redirect(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V", ordinal = 5))
+    private void removeHungerBarThird(DrawContext context, Identifier texture, int x, int y, int u, int v) {
 
         if (!Energizer.CONFIG.remove_hunger) {
 
-            context.drawTexture(texture, x + Energizer.CONFIG.x_offset_hunger_bar, y - Energizer.CONFIG.y_offset_hunger_bar, u, v, width, height);
+            context.drawGuiTexture(texture, x + Energizer.CONFIG.x_offset_hunger_bar, y - Energizer.CONFIG.y_offset_hunger_bar, u, v);
         }
     }
 
