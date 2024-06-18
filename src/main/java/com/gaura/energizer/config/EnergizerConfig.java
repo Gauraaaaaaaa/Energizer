@@ -44,6 +44,10 @@ public class EnergizerConfig implements ConfigData {
     public boolean vigor_wave = true;
 
     @ConfigEntry.Category("stamina")
+    @Comment("If you must keep pressing the sprint keybind to sprint, rather than toggling it.")
+    public boolean sprint_keybind = true;
+
+    @ConfigEntry.Category("stamina")
     @Comment("The x offset for the stamina bar.")
     public int x_offset_stamina_bar = 0;
 

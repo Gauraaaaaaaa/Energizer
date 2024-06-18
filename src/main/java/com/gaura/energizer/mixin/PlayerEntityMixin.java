@@ -4,6 +4,7 @@ import com.gaura.energizer.Energizer;
 import com.gaura.energizer.utils.IPlayerEntity;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -124,7 +125,7 @@ public class PlayerEntityMixin implements IPlayerEntity {
                 }
             }
 
-            if (this.stopSprint) {
+            if (this.stopSprint || (!MinecraftClient.getInstance().options.sprintKey.isPressed() && Energizer.CONFIG.sprint_keybind)) {
 
                 player.setSprinting(false);
             }

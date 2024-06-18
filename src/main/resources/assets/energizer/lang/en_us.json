@@ -10,6 +10,7 @@
   "text.autoconfig.energizer.option.stamina_increase_hunger_empty": "Stamina Increase Hunger Empty",
   "text.autoconfig.energizer.option.stamina_blink": "Stamina Blink",
   "text.autoconfig.energizer.option.vigor_wave": "Vigor Wave",
+  "text.autoconfig.energizer.option.sprint_keybind": "Keep Pressing Sprint Keybind",
   "text.autoconfig.energizer.option.x_offset_stamina_bar": "X Offset",
   "text.autoconfig.energizer.option.y_offset_stamina_bar": "Y Offset",
 
