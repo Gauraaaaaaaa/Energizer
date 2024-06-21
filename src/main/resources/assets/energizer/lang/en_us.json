@@ -11,6 +11,10 @@
   "text.autoconfig.energizer.option.stamina_blink": "Stamina Blink",
   "text.autoconfig.energizer.option.vigor_wave": "Vigor Wave",
   "text.autoconfig.energizer.option.sprint_keybind": "Keep Pressing Sprint Keybind",
+  "text.autoconfig.energizer.option.lower_jump": "Lower Jump",
+  "text.autoconfig.energizer.option.lower_jump_multiplier": "Lower Jump Multiplier",
+  "text.autoconfig.energizer.option.slower_walk": "Slower Walk",
+  "text.autoconfig.energizer.option.slower_walk_multiplier": "Slower Walk Multiplier",
   "text.autoconfig.energizer.option.x_offset_stamina_bar": "X Offset",
   "text.autoconfig.energizer.option.y_offset_stamina_bar": "Y Offset",
 

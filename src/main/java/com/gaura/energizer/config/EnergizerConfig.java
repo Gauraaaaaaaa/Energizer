@@ -48,6 +48,22 @@ public class EnergizerConfig implements ConfigData {
     public boolean sprint_keybind = true;
 
     @ConfigEntry.Category("stamina")
+    @Comment("If the player will jump lower when the stamina bar is empty.")
+    public boolean lower_jump = true;
+
+    @ConfigEntry.Category("stamina")
+    @Comment("The multiplier for the jump height when the stamina bar is empty.")
+    public float lower_jump_multiplier = 0.75F;
+
+    @ConfigEntry.Category("stamina")
+    @Comment("If the player will walk slower when the stamina bar is empty.")
+    public boolean slower_walk = true;
+
+    @ConfigEntry.Category("stamina")
+    @Comment("The multiplier for the walk speed when the stamina bar is empty.")
+    public float slower_walk_multiplier = 0.5F;
+
+    @ConfigEntry.Category("stamina")
     @Comment("The x offset for the stamina bar.")
     public int x_offset_stamina_bar = 0;
 

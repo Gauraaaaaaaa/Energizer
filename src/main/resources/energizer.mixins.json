@@ -9,7 +9,8 @@
 		"LivingEntityInvoker",
 		"BrewingRecipeRegistryInvoker",
 		"InGameHudInvoker",
-		"ClientPlayerEntityMixin"
+		"ClientPlayerEntityMixin",
+		"EntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
