@@ -19,6 +19,9 @@
 		"main": [
 			"com.gaura.energizer.Energizer"
 		],
+		"client": [
+			"com.gaura.energizer.EnergizerClient"
+		],
 		"modmenu": [
 			"com.gaura.energizer.config.ModMenuIntegration"
 		]

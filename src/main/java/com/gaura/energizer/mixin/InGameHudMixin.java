@@ -111,7 +111,7 @@ public class InGameHudMixin {
 
             boolean hasHunger = client.player.hasStatusEffect(StatusEffects.HUNGER);
             boolean hasVigor = client.player.hasStatusEffect(Energizer.VIGOR);
-            boolean stopSprint = ((IPlayerEntity) client.player).getStopSprint();
+            boolean stopSprint = ((IPlayerEntity) client.player).getStopSprint().getBoolean("stopSprint");
 
             int lines = (int) Math.ceil(maxStamina / 20);
             int fullIconsPerLine = (int) (currentStamina / 2);

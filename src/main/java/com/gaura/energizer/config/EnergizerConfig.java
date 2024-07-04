@@ -13,11 +13,23 @@ public class EnergizerConfig implements ConfigData {
 
     @ConfigEntry.Category("stamina")
     @Comment("The amount of stamina decreased per tick when sprinting.")
-    public float stamina_decrease = 0.5F;
+    public float sprinting_stamina_decrease = 0.5F;
 
     @ConfigEntry.Category("stamina")
     @Comment("The amount of stamina decreased per tick when sprinting and hungry.")
-    public float stamina_decrease_hunger = 1F;
+    public float sprinting_stamina_decrease_hunger = 1F;
+
+    @ConfigEntry.Category("stamina")
+    @Comment("If swimming should cost stamina.")
+    public boolean swimming_cost_stamina = true;
+
+    @ConfigEntry.Category("stamina")
+    @Comment("The amount of stamina decreased per tick when swimming.")
+    public float swimming_stamina_decrease = 0.5F;
+
+    @ConfigEntry.Category("stamina")
+    @Comment("The amount of stamina decreased per tick when swimming and hungry.")
+    public float swimming_stamina_decrease_hunger = 1F;
 
     @ConfigEntry.Category("stamina")
     @Comment("The amount of stamina increased per tick when not sprinting.")

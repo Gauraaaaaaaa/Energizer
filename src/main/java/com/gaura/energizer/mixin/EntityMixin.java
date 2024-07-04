@@ -2,6 +2,8 @@ package com.gaura.energizer.mixin;
 
 import com.gaura.energizer.Energizer;
 import com.gaura.energizer.utils.IPlayerEntity;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,9 +19,14 @@ public class EntityMixin {
 
         Entity entity = (Entity) (Object) this;
 
-        if (entity instanceof PlayerEntity player && ((IPlayerEntity) player).getStopSprint() && Energizer.CONFIG.lower_jump) {
+        if (entity instanceof PlayerEntity player && !player.isCreative() && !player.isSpectator() && Energizer.CONFIG.lower_jump) {
 
-            cir.setReturnValue(cir.getReturnValue() * Energizer.CONFIG.lower_jump_multiplier);
+            ClientPlayerEntity client = MinecraftClient.getInstance().player;
+
+            if (client != null && ((IPlayerEntity) client).getStopSprint().getBoolean("stopSprint")) {
+
+                cir.setReturnValue(cir.getReturnValue() * Energizer.CONFIG.lower_jump_multiplier);
+            }
         }
     }
 
@@ -28,9 +35,14 @@ public class EntityMixin {
 
         Entity entity = (Entity) (Object) this;
 
-        if (entity instanceof PlayerEntity player && ((IPlayerEntity) player).getStopSprint() && Energizer.CONFIG.slower_walk) {
+        if (entity instanceof PlayerEntity player && !player.isCreative() && !player.isSpectator() && Energizer.CONFIG.slower_walk) {
 
-            cir.setReturnValue(cir.getReturnValue() * Energizer.CONFIG.slower_walk_multiplier);
+            ClientPlayerEntity client = MinecraftClient.getInstance().player;
+
+            if (client != null && ((IPlayerEntity) client).getStopSprint().getBoolean("stopSprint")) {
+
+                cir.setReturnValue(cir.getReturnValue() * Energizer.CONFIG.slower_walk_multiplier);
+            }
         }
     }
 }

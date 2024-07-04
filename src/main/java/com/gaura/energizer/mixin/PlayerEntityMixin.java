@@ -1,14 +1,19 @@
 package com.gaura.energizer.mixin;
 
 import com.gaura.energizer.Energizer;
+import com.gaura.energizer.EnergizerClient;
 import com.gaura.energizer.utils.IPlayerEntity;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -76,17 +81,17 @@ public class PlayerEntityMixin implements IPlayerEntity {
         player.getDataTracker().startTracking(Energizer.STAMINA_DATA, 1.0F);
     }
 
-    public boolean stopSprint = false;
+    public boolean stopSprint;
 
     @Inject(method = "tickMovement", at = @At("HEAD"))
     private void updateStamina(CallbackInfo ci) {
 
         PlayerEntity player = (PlayerEntity) (Object) this;
 
-        if (!player.isCreative() && !player.isSpectator()) {
+        if (!player.isCreative() && !player.isSpectator() && !player.getWorld().isClient) {
 
             boolean hasHunger = player.hasStatusEffect(StatusEffects.HUNGER);
-            float staminaDecrease = hasHunger ? Energizer.CONFIG.stamina_decrease_hunger : Energizer.CONFIG.stamina_decrease;
+            float staminaDecrease = 0.0F;
             float staminaIncrease = (hasHunger && stopSprint) ? Energizer.CONFIG.stamina_increase_hunger_empty : hasHunger ? Energizer.CONFIG.stamina_increase_hunger : stopSprint ? Energizer.CONFIG.stamina_increase_empty : Energizer.CONFIG.stamina_increase;
 
             if (player.hasStatusEffect(Energizer.VIGOR)) {
@@ -105,7 +110,20 @@ public class PlayerEntityMixin implements IPlayerEntity {
                 }
                 else {
 
-                    if ((player.isSprinting() || player.isSwimming()) && !stopSprint) {
+                    if (player.isSprinting() && !player.isSubmergedInWater() && !stopSprint) {
+
+                        staminaDecrease = hasHunger ? Energizer.CONFIG.sprinting_stamina_decrease_hunger : Energizer.CONFIG.sprinting_stamina_decrease;
+
+                        this.setStamina(this.getStamina() - staminaDecrease);
+
+                        if (this.getStamina() <= 0.0F) {
+
+                            this.stopSprint = true;
+                        }
+                    }
+                    else if (player.isSwimming() && player.isSubmergedInWater() && Energizer.CONFIG.swimming_cost_stamina && !stopSprint) {
+
+                        staminaDecrease = hasHunger ? Energizer.CONFIG.swimming_stamina_decrease_hunger : Energizer.CONFIG.swimming_stamina_decrease;
 
                         this.setStamina(this.getStamina() - staminaDecrease);
 
@@ -125,10 +143,9 @@ public class PlayerEntityMixin implements IPlayerEntity {
                 }
             }
 
-            if (this.stopSprint || (!MinecraftClient.getInstance().options.sprintKey.isPressed() && Energizer.CONFIG.sprint_keybind)) {
-
-                player.setSprinting(false);
-            }
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeBoolean(this.stopSprint);
+            ServerPlayNetworking.send((ServerPlayerEntity) player, EnergizerClient.STOP_SPRINT_ID, buf);
         }
     }
 
@@ -153,9 +170,36 @@ public class PlayerEntityMixin implements IPlayerEntity {
         return (float) player.getAttributeValue(Energizer.STAMINA_ATTRIBUTE);
     }
 
-    @Override
-    public boolean getStopSprint() {
+    private NbtCompound persistentData;
 
-        return this.stopSprint;
+    @Override
+    public NbtCompound getStopSprint() {
+
+        if (this.persistentData == null) {
+
+            this.persistentData = new NbtCompound();
+        }
+
+        return persistentData;
+    }
+
+    @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
+    private void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {
+
+        nbt.putBoolean("StopSprint", this.stopSprint);
+        nbt.putFloat("Stamina", this.getStamina());
+    }
+
+    @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
+    private void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
+
+        if (nbt.contains("Stamina", NbtElement.NUMBER_TYPE)) {
+
+            this.setStamina(nbt.getFloat("Stamina"));
+        }
+        if (nbt.contains("StopSprint")) {
+
+            this.stopSprint = nbt.getBoolean("StopSprint");
+        }
     }
 }

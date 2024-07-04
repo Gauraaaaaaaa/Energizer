@@ -2,8 +2,11 @@
   "text.autoconfig.energizer.title": "Energizer",
 
   "text.autoconfig.energizer.category.stamina": "Stamina",
-  "text.autoconfig.energizer.option.stamina_decrease": "Stamina Decrease",
-  "text.autoconfig.energizer.option.stamina_decrease_hunger": "Stamina Decrease Hunger",
+  "text.autoconfig.energizer.option.sprinting_stamina_decrease": "Sprinting Stamina Decrease",
+  "text.autoconfig.energizer.option.sprinting_stamina_decrease_hunger": "Sprinting Stamina Decrease Hunger",
+  "text.autoconfig.energizer.option.swimming_cost_stamina": "Swimming Cost Stamina",
+  "text.autoconfig.energizer.option.swimming_stamina_decrease": "Swimming Stamina Decrease",
+  "text.autoconfig.energizer.option.swimming_stamina_decrease_hunger": "Swimming Stamina Decrease Hunger",
   "text.autoconfig.energizer.option.stamina_increase": "Stamina Increase",
   "text.autoconfig.energizer.option.stamina_increase_hunger": "Stamina Increase Hunger",
   "text.autoconfig.energizer.option.stamina_increase_empty": "Stamina Increase Empty",
