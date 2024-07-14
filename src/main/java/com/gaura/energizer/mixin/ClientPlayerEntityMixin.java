@@ -21,11 +21,13 @@ public class ClientPlayerEntityMixin {
 
             boolean stopSprint = ((IPlayerEntity) player).getStopSprint().getBoolean("stopSprint");
 
+            float currentStamina = player.getDataTracker().get(Energizer.STAMINA_DATA);
+
             if (Energizer.CONFIG.can_continue_sprinting && (!stopSprint && (MinecraftClient.getInstance().options.sprintKey.isPressed() && Energizer.CONFIG.sprint_keybind))) {
 
                 cir.setReturnValue(true);
             }
-            else if (stopSprint || (!MinecraftClient.getInstance().options.sprintKey.isPressed() && Energizer.CONFIG.sprint_keybind)) {
+            else if ((stopSprint || (!MinecraftClient.getInstance().options.sprintKey.isPressed() && Energizer.CONFIG.sprint_keybind) || (currentStamina <= 0.0F && !Energizer.CONFIG.disable_sprint_swim_empty_stamina)) && !player.isCreative() && !player.isSpectator()) {
 
                 cir.setReturnValue(false);
             }

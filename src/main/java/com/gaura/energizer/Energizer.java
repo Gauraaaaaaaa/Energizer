@@ -26,6 +26,7 @@ public class Energizer implements ModInitializer {
 
 	public static final String MOD_ID = "energizer";
 	public static final String HEARTY_MEALS_MOD_ID = "heartymeals";
+	public static final String NOSTALGIC_TWEAKS_MOD_ID = "nostalgic_tweaks";
 
 	public static EnergizerConfig CONFIG = new EnergizerConfig();
 

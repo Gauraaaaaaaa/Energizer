@@ -10,6 +10,7 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -21,7 +22,9 @@ import net.minecraft.stat.Stats;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -30,12 +33,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin implements IPlayerEntity {
 
+    @Shadow @Nullable public FishingBobberEntity fishHook;
+
     @Inject(method = "canConsume", at = @At("RETURN"), cancellable = true)
     public void canConsume(boolean ignoreHunger, CallbackInfoReturnable<Boolean> cir) {
 
         if (!FabricLoader.getInstance().isModLoaded(Energizer.HEARTY_MEALS_MOD_ID) && Energizer.CONFIG.remove_hunger) {
 
-            cir.setReturnValue(true);
+            PlayerEntity player = (PlayerEntity) (Object) this;
+
+            cir.setReturnValue(!(player.getHealth() == player.getMaxHealth()) || ignoreHunger);
         }
     }
 
@@ -83,10 +90,13 @@ public class PlayerEntityMixin implements IPlayerEntity {
 
     public boolean stopSprint;
 
+    private long lastStaminaLossTime = 0;
+
     @Inject(method = "tickMovement", at = @At("HEAD"))
     private void updateStamina(CallbackInfo ci) {
 
         PlayerEntity player = (PlayerEntity) (Object) this;
+        long currentTime = player.getWorld().getTime();
 
         if (!player.isCreative() && !player.isSpectator() && !player.getWorld().isClient) {
 
@@ -103,7 +113,7 @@ public class PlayerEntityMixin implements IPlayerEntity {
 
                 if (player.hasVehicle()) {
 
-                    if (this.getStamina() < this.getMaxStamina()) {
+                    if ((this.getStamina() < this.getMaxStamina()) && ((currentTime - lastStaminaLossTime) >= Energizer.CONFIG.stamina_regeneration_delay)) {
 
                         this.setStamina(this.getStamina() + staminaIncrease);
                     }
@@ -113,10 +123,10 @@ public class PlayerEntityMixin implements IPlayerEntity {
                     if (player.isSprinting() && !player.isSubmergedInWater() && !stopSprint) {
 
                         staminaDecrease = hasHunger ? Energizer.CONFIG.sprinting_stamina_decrease_hunger : Energizer.CONFIG.sprinting_stamina_decrease;
-
                         this.setStamina(this.getStamina() - staminaDecrease);
+                        lastStaminaLossTime = currentTime;
 
-                        if (this.getStamina() <= 0.0F) {
+                        if (this.getStamina() <= 0.0F && Energizer.CONFIG.disable_sprint_swim_empty_stamina) {
 
                             this.stopSprint = true;
                         }
@@ -124,15 +134,15 @@ public class PlayerEntityMixin implements IPlayerEntity {
                     else if (player.isSwimming() && player.isSubmergedInWater() && Energizer.CONFIG.swimming_cost_stamina && !stopSprint) {
 
                         staminaDecrease = hasHunger ? Energizer.CONFIG.swimming_stamina_decrease_hunger : Energizer.CONFIG.swimming_stamina_decrease;
-
                         this.setStamina(this.getStamina() - staminaDecrease);
+                        lastStaminaLossTime = currentTime;
 
-                        if (this.getStamina() <= 0.0F) {
+                        if (this.getStamina() <= 0.0F && Energizer.CONFIG.disable_sprint_swim_empty_stamina) {
 
                             this.stopSprint = true;
                         }
                     }
-                    else if (this.getStamina() < this.getMaxStamina()) {
+                    else if ((this.getStamina() < this.getMaxStamina()) && ((currentTime - lastStaminaLossTime) >= Energizer.CONFIG.stamina_regeneration_delay)) {
 
                         this.setStamina(this.getStamina() + staminaIncrease);
                     }

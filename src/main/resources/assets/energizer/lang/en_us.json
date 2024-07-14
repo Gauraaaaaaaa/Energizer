@@ -2,6 +2,7 @@
   "text.autoconfig.energizer.title": "Energizer",
 
   "text.autoconfig.energizer.category.stamina": "Stamina",
+  "text.autoconfig.energizer.option.disable_sprint_swim_empty_stamina": "Disable Sprint/Swim From Empty To Full Stamina",
   "text.autoconfig.energizer.option.sprinting_stamina_decrease": "Sprinting Stamina Decrease",
   "text.autoconfig.energizer.option.sprinting_stamina_decrease_hunger": "Sprinting Stamina Decrease Hunger",
   "text.autoconfig.energizer.option.swimming_cost_stamina": "Swimming Cost Stamina",
@@ -11,6 +12,7 @@
   "text.autoconfig.energizer.option.stamina_increase_hunger": "Stamina Increase Hunger",
   "text.autoconfig.energizer.option.stamina_increase_empty": "Stamina Increase Empty",
   "text.autoconfig.energizer.option.stamina_increase_hunger_empty": "Stamina Increase Hunger Empty",
+  "text.autoconfig.energizer.option.stamina_regeneration_delay": "Stamina Regeneration Delay",
   "text.autoconfig.energizer.option.stamina_blink": "Stamina Blink",
   "text.autoconfig.energizer.option.vigor_wave": "Vigor Wave",
   "text.autoconfig.energizer.option.sprint_keybind": "Keep Pressing Sprint Keybind",

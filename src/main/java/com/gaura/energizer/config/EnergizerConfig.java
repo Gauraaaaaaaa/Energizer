@@ -12,6 +12,10 @@ public class EnergizerConfig implements ConfigData {
     // STAMINA
 
     @ConfigEntry.Category("stamina")
+    @Comment("If you will not be able to sprint or swim when you run out of stamina and wait for it to completely regenerate.")
+    public boolean disable_sprint_swim_empty_stamina = true;
+
+    @ConfigEntry.Category("stamina")
     @Comment("The amount of stamina decreased per tick when sprinting.")
     public float sprinting_stamina_decrease = 0.5F;
 
@@ -46,6 +50,10 @@ public class EnergizerConfig implements ConfigData {
     @ConfigEntry.Category("stamina")
     @Comment("The amount of stamina increased per tick when not sprinting, hungry and stamina completely empty.")
     public float stamina_increase_hunger_empty = 0.125F;
+
+    @ConfigEntry.Category("stamina")
+    @Comment("The delay in ticks before the stamina starts regenerating.")
+    public int stamina_regeneration_delay = 10;
 
     @ConfigEntry.Category("stamina")
     @Comment("If the stamina bar should blink when stamina is full.")
